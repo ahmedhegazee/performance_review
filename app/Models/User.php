@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'uuid',
     ];
 
     /**
@@ -31,14 +32,31 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'is_admin',
     ];
 
     /**
-     * The attributes that should be cast.
+     * The accessors to append to the model's array form.
      *
-     * @var array<string, string>
+     * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected $appends = ['is_role'];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+    /**
+     * Returns the role of user.
+     * @return string.
+     */
+    public function getIsRoleAttribute()
+    {
+        return $this->attributes['is_admin'] ? 'admin' : 'employee';
+    }
 }
