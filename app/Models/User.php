@@ -89,4 +89,9 @@ class User extends Authenticatable
             ])
             ->using(ReviewRequest::class);
     }
+
+    public function feedbacks()
+    {
+        return $this->hasManyThrough(ReviewFeedback::class, ReviewRequest::class, 'reviewed_id', 'review_request_id');
+    }
 }
