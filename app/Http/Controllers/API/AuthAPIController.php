@@ -6,6 +6,8 @@ use App\Exceptions\WrongLoginCredentials;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
+use App\Models\ReviewRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,6 +45,15 @@ class AuthAPIController extends Controller
 
     public function userData()
     {
+        $reviewed = User::find(2);
+        $reviewer = User::find(3);
+        $reviewer->reviewRequests()->attach(
+            $reviewed->id,
+            [
+                'created_by' => auth()->user()->id
+            ]
+        );
+        dd($reviewer->reviewRequests);
         return new UserResource(Auth::user());
     }
 }
