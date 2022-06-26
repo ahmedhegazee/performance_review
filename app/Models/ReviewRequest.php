@@ -20,6 +20,10 @@ class ReviewRequest extends Pivot
     {
         return $this->belongsTo(User::class, 'reviewed_id');
     }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
     public function feedback()
     {
         return $this->hasOne(ReviewFeedback::class, 'review_request_id');

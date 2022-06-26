@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthAPIController;
 use App\Http\Controllers\API\UserReviewFeedbackController;
+use App\Http\Controllers\UserReviewRequestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,12 @@ Route::controller(AuthAPIController::class)->prefix('auth')->group(function () {
         Route::post('logout', 'logout');
     });
 });
-Route::apiResource('review-feedback', UserReviewFeedbackController::class)
-    ->only(['index', 'show'])
-    ->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('review-feedback', UserReviewFeedbackController::class)
+        ->only(['index', 'show']);
+    Route::controller(UserReviewRequestController::class)
+        ->group(function () {
+            Route::get('review-request', 'index');
+            Route::post('review-request/{review_request}/write-feedback', 'writeFeedback');
+        });
+});
